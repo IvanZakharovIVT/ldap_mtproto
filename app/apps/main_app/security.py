@@ -5,7 +5,7 @@ from fastapi.requests import Request
 from fastapi.security import HTTPBasic
 from fastapi_jwt import JwtAccessBearer, JwtRefreshBearer
 
-from app.apps.users.exceptions import UserAuthorizationError
+from app.apps.main_app.exceptions import UserAuthorizationError
 from app.core.config import settings
 
 access_security = JwtAccessBearer(secret_key=settings.JWT_SECRET_KEY, auto_error=True)

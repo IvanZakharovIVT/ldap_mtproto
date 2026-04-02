@@ -16,13 +16,6 @@ class Settings(BaseSettings):
     LOG_LEVEL: str = 'INFO'
     TIMEZONE: str = 'UTC'
 
-    # DATABASE CONFIG
-    # POSTGRES_USER: str
-    # POSTGRES_PASSWORD: str
-    # POSTGRES_HOST: str
-    # POSTGRES_PORT: str
-    # POSTGRES_DB: str
-
     # API VERSION CONFIG
     API_V1: str = '/v1'
 
@@ -36,22 +29,6 @@ class Settings(BaseSettings):
     LDAP_HOST: str = 'ldap://ldap-test.nordclan:389'
     BASE_ON: str = 'dc=company'
 
-    # # COMPUTER FIELDS
-    # @property
-    # def DATABASE_URL(self) -> str:
-    #     return (
-    #         f'postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@'
-    #         f'{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}'
-    #     )
-    #
-    # @property
-    # def DATABASE_A_URL(self) -> str:
-    #     return (
-    #         f'postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@'
-    #         f'{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}'
-    #     )
-
-    # Валидация полей
     @model_validator(mode='before')
     @classmethod
     def validate_and_set_defaults(cls, data: Dict[str, Any]) -> Dict[str, Any]:
