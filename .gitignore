@@ -1,0 +1,5 @@
+.env
+.venv
+.idea
+/paramiko_mtproto.py
+/ldap_python.py
