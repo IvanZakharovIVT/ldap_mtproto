@@ -9,7 +9,7 @@ class LDAPRepository:
     def __init__(self):
         self._server = Server(settings.LDAP_HOST, get_info=ALL)
 
-    async def is_user_exist(self, username: str, password: str) -> bool:
+    def is_user_exist(self, username: str, password: str) -> bool:
         conn = None
         try:
             conn = Connection(self._server, user=f'uid={username},{settings.BIND_ON}', password=password, auto_bind=True)

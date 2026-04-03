@@ -15,13 +15,16 @@ refresh_security = JwtRefreshBearer(secret_key=settings.JWT_SECRET_KEY, auto_err
 basic_security = HTTPBasic()
 
 
-async def get_data_from_token(request: Request, token_name: str):
+async def get_data_from_token(request: Request, token_name: str) -> str:
     token = request.cookies.get(token_name)
     if token:
         try:
             payload = jwt.decode(token, settings.JWT_SECRET_KEY)
             payload.validate()
-            return payload.get('subject', {})
+            username = payload.get('subject', {}).get('username')
+            if username:
+                return username
+            raise BadSignatureError
         except ExpiredTokenError:
             raise HTTPException(
                 status_code=401, detail='Срок действия токена закончился'
@@ -33,9 +36,5 @@ async def get_data_from_token(request: Request, token_name: str):
     raise HTTPException(status_code=401, detail='Not authenticated')
 
 
-async def get_data_from_access_token(request: Request):
+async def get_data_from_access_token(request: Request) -> str:
     return await get_data_from_token(request, settings.AUTH_TOKEN_NAME)
-
-
-async def get_data_from_refresh_token(request: Request):
-    return await get_data_from_token(request, settings.REFRESH_TOKEN_NAME)

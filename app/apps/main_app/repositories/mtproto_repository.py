@@ -15,7 +15,7 @@ class MTProtoRepository:
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         return client
 
-    async def __run_command(self, command: str):
+    def __run_command(self, command: str):
         client = self.__init_connection()
         try:
             client.connect(
@@ -46,8 +46,8 @@ class MTProtoRepository:
         finally:
             client.close()
 
-    async def generate_link(self, username: str):
+    def generate_link(self, username: str):
         return self.__run_command(command = f"bash MTProtoProxyInstall.sh 4 {username}")
 
-    async def rewoke_link(self, username: str):
+    def rewoke_link(self, username: str):
         return self.__run_command(command=f"bash MTProtoProxyInstall.sh 5 {username}")

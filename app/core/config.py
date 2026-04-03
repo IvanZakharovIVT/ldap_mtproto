@@ -36,6 +36,10 @@ class Settings(BaseSettings):
     BASE_ON: str = 'dc=nordclan'
     BIND_ON: str = 'dc=nordclan'
 
+    MTPROTO_HOST: str = "216.57.111.149"  # IP адрес или д
+    MTPROTO_USERNAME: str = "root"
+    MTPROTO_PASSWORD: str = "fF417#fC#_6s7p"  # Пароль
+
     # COMPUTER FIELDS
     @property
     def DATABASE_URL(self) -> str:

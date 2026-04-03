@@ -14,7 +14,7 @@ class UserRepository:
         stmt = select(User).where(User.username == username)
         return await self._session.scalar(stmt)
 
-    async def update_user(self, username: str, link: str) -> Optional[User]:
+    async def update_user(self, username: str, link: Optional[str] = None) -> Optional[User]:
         await self._session.execute(
             update(User).where(User.username == username).values(tg_link=link)
         )
