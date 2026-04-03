@@ -36,6 +36,7 @@ class MTProtoRepository:
             if error:
                 print("=== Ошибка ===")
                 print(error)
+            return result
 
         except paramiko.AuthenticationException:
             print("Ошибка: Неверное имя пользователя или пароль.")
