@@ -10,7 +10,7 @@ class UserService:
         self._ldap_repository = LDAPRepository()
         self._user_repository = UserRepository(session)
 
-    async def get_user(self, username: str, password: str):
+    async def get_user_and_auth(self, username: str, password: str):
         if not self._ldap_repository.is_user_exist(username, password):
             raise UserAuthorizationError(username)
         user = await self._user_repository.get_by_username(username)

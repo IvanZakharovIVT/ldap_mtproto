@@ -3,7 +3,8 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, status, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.apps.main_app.schemas import UserAuthSchemaBase
+from app.apps.main_app.repositories.user_repository import UserRepository
+from app.apps.main_app.schemas import UserAuthSchemaBase, UserSchema
 from app.apps.main_app.security import get_data_from_access_token
 from app.apps.main_app.services.mtproto_service import MTProtoService
 from app.apps.main_app.services.user_service import UserService
@@ -26,7 +27,7 @@ async def auth_cookie(
     session: Annotated[AsyncSession, Depends(get_session)],
 ) -> dict:
     ldap_service = UserService(session)
-    user = await ldap_service.get_user(credentials_schema.username, credentials_schema.password)
+    user = await ldap_service.get_user_and_auth(credentials_schema.username, credentials_schema.password)
     subject = {
         'username': user.username,
     }
@@ -91,3 +92,17 @@ async def revoke_link(
 ):
     mtproto_service = MTProtoService(session)
     await mtproto_service.revoke_link(current_user)
+
+@router.get(
+    '/user/me',
+    summary='Получение данных текущего пользователя',
+    description='Получение данных текущего пользователя',
+    status_code=status.HTTP_200_OK,
+    response_model=UserSchema,
+)
+async def get_me(
+    current_user: Annotated[str, Depends(get_data_from_access_token)],
+    session: Annotated[AsyncSession, Depends(get_session)],
+):
+    user_repository = UserRepository(session)
+    return await user_repository.get_by_username(current_user)
