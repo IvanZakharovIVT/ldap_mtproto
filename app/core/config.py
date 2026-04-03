@@ -1,5 +1,4 @@
 from functools import lru_cache
-from pathlib import Path
 from typing import Any, Dict
 
 from pydantic import model_validator
@@ -26,8 +25,31 @@ class Settings(BaseSettings):
     AUTH_TOKEN_NAME: str = 'access_token'
     COOKIE_DOMAIN: str | None = None
 
+    # DATABASE CONFIG
+    POSTGRES_USER: str
+    POSTGRES_PASSWORD: str
+    POSTGRES_HOST: str
+    POSTGRES_PORT: str
+    POSTGRES_DB: str
+
     LDAP_HOST: str = 'ldap://ldap-test.nordclan:389'
-    BASE_ON: str = 'dc=company'
+    BASE_ON: str = 'dc=nordclan'
+    BIND_ON: str = 'dc=nordclan'
+
+    # COMPUTER FIELDS
+    @property
+    def DATABASE_URL(self) -> str:
+        return (
+            f'postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@'
+            f'{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}'
+        )
+
+    @property
+    def DATABASE_A_URL(self) -> str:
+        return (
+            f'postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}@'
+            f'{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}'
+        )
 
     @model_validator(mode='before')
     @classmethod
