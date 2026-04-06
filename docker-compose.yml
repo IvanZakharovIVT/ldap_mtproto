@@ -1,0 +1,28 @@
+services:
+  db:
+    image: postgres:16
+    container_name: db
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: mtproto_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: web
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+volumes:
+  pg_data:
