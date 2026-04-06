@@ -24,5 +24,20 @@ services:
     depends_on:
       - db
 
+  nginx:
+    build:
+      context: .
+      dockerfile: ./deploy/nginx/Dockerfile.nginx
+    command: nginx -g 'daemon off;'
+    ports:
+      - "80:80"
+    volumes:
+      - static_volume:/app/src/server/static/
+      - media_volume:/app/src/server/media/
+    depends_on:
+      - web
+
 volumes:
   pg_data:
+  static_volume:
+  media_volume:
